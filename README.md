@@ -5,8 +5,6 @@
 ![Infraestrutura](https://img.shields.io/badge/infra-AWS%20%7C%20Docker-orange)
 ![Licença](https://img.shields.io/badge/licença-MIT-green)
 
-Com certeza! Com base no projeto detalhado que estruturamos, aqui está uma sugestão de conteúdo para o seu arquivo README.md no GitHub, formatado em Markdown:
-
 # Projeto de Engenharia de Dados para Detecção de Fraudes
 
 Este repositório contém a estrutura e o código para um projeto abrangente de engenharia de dados focado na construção de uma plataforma robusta e escalável para detecção de fraudes. O objetivo é demonstrar as melhores práticas em arquitetura de dados, processamento batch e streaming, governança de dados e DataDevOps/MLOps, utilizando tecnologias modernas, principalmente no ecossistema AWS.
