@@ -29,8 +29,9 @@ Para começar a desenvolver, siga estes passos:
 
 3.  **Clone o seu Fork:**
     ```bash
-    git clone https://github.com/SEU_USUARIO/fraud-detection-platform.git
-    cd fraud-detection-platform
+     git clone https://github.com/felipesimione/sentinel_data_project.git
+     
+     cd sentinel_data_project
     ```
 
 4.  **Configure o Ambiente Local (usando Docker):**

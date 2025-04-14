@@ -58,7 +58,7 @@ Diagramas detalhados da arquitetura podem ser encontrados no diretório `/docs/a
 
 O repositório está organizado da seguinte forma para promover modularidade e clareza:
 ```
-fraud-detection-platform/
+sentinel_data_project/
 ├── .github/
 │   ├── workflows/          # CI/CD pipelines (GitHub Actions)
 │   └── CODEOWNERS          # Donos do código por diretório
