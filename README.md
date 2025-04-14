@@ -1,7 +1,7 @@
 # Fraud Detection Platform
 
 ![Status do Projeto](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![Linguagens](https://img.shields.io/badge/linguagens-Python%20%7C%20SQL-blue)
+![Linguagens](https://img.shields.io/badge/linguagens-Python%20%7C%20SQL%20%7C%20NoSQL-blue)
 ![Infraestrutura](https://img.shields.io/badge/infra-AWS%20%7C%20Docker-orange)
 ![Licença](https://img.shields.io/badge/licença-MIT-green)
 
