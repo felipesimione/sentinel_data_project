@@ -352,4 +352,4 @@ sentinel_data_project/
 
 ## Contribuição
 
-Consulte `CONTRIBUTING.md` para obter diretrizes sobre como contribuir para este projeto.
+Consulte `CONTRIBUTING.md` para obter diretrizes sobre como contribuir para este projeto.# sentinel_data_project
