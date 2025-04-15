@@ -17,21 +17,257 @@ A detecção de fraudes é um desafio crítico para muitas empresas. Este projet
 
 O desenvolvimento está organizado em fases progressivas:
 
-### Fase 1: Arquitetura Batch e ETL Base
-*   **Foco:** Estabelecer a fundação da plataforma com pipelines de ingestão e processamento em batch.
-*   **Atividades Principais:** Definição da arquitetura AWS, configuração de IaC básica (Terraform), ingestão de diversas fontes de dados (APIs, logs, bancos transacionais) para o Data Lake (S3), implementação de pipelines ETL com Spark (EMR/Databricks), feature engineering inicial, orquestração com Airflow, e configuração do Data Warehouse (Redshift) e banco NoSQL (DynamoDB). Implementação de monitoramento e testes iniciais.
+# Fases do Projeto de Detecção de Fraudes
 
-### Fase 2: Implementação de Streaming
-*   **Foco:** Adicionar capacidades de processamento e detecção em tempo real.
-*   **Atividades Principais:** Design da arquitetura de streaming (Kappa/Lambda), configuração de serviços de streaming (Kinesis/MSK), implementação de processamento de streams (Kafka Streams/Kinesis Analytics/Spark Streaming), enriquecimento e detecção de anomalias em tempo real, sistema de alertas e armazenamento otimizado para acesso rápido (ElastiCache/Redis, DynamoDB).
+## Fase 1: Fundação e Processamento Batch (3-4 meses)
 
-### Fase 3: Data Governance
-*   **Foco:** Garantir a qualidade, segurança e conformidade dos dados.
-*   **Atividades Principais:** Implementação de catálogo de dados (Glue Catalog/Atlas), framework de qualidade de dados (Great Expectations), políticas de segurança (criptografia, mascaramento, controle de acesso), conformidade com regulações (PCI-DSS, LGPD), e aprimoramento das práticas de DataOps (CI/CD para pipelines, monitoramento avançado).
+### 1. Planejamento e Infraestrutura Base
+- **Arquitetura e Design**
+  - Desenho da arquitetura AWS completa
+  - Modelagem de dados e definição de schemas
+  - Estratégia de versionamento de dados e schemas
+  - Definição de ambientes (dev/staging/prod)
 
-### Fase 4: DataDevOps e Automação Avançada
-*   **Foco:** Otimizar operações, custos e integrar MLOps.
-*   **Atividades Principais:** IaC completa com Terraform e GitOps, integração de pipelines de MLOps (treinamento, versionamento, deploy, monitoramento de modelos), implementação de Feature Store, otimização contínua de custos e performance tuning automatizado.
+- **Infraestrutura como Código (Terraform)**
+  - Implementação completa da infraestrutura via Terraform
+  - Módulos para networking, storage, compute e segurança
+  - Pipeline de CI/CD para infraestrutura
+  - Gestão de estados e workspace segregados por ambiente
+
+- **Governança Básica**
+  - Classificação inicial de dados (PII, transacional, comportamental)
+  - Políticas de retenção e lifecycle no S3
+  - Estrutura de controle de acesso (IAM)
+  - Logs de auditoria centralizados (CloudTrail, CloudWatch)
+
+### 2. Ingestão e Armazenamento
+- **Data Lake Foundation**
+  - Configuração de buckets S3 com particionamento otimizado
+  - Estruturação em camadas (raw, cleaned, curated)
+  - Estratégia de compressão e formatação (Parquet/ORC)
+  - Catalogação básica com AWS Glue
+
+- **Conectores de Ingestão**
+  - Desenvolvimento de conectores para diversas fontes
+  - Implementação de validações na ingestão
+  - Sistema de tracking para arquivos/registros processados
+  - Mecanismos de recuperação de falhas
+
+### 3. Processamento e Transformação
+- **Pipeline ETL**
+  - Jobs Spark (AWS EMR/Glue) para transformações
+  - Feature engineering para detecção de fraudes
+  - Implementação de janelas temporais (agregações)
+  - Validação de qualidade pós-transformação
+
+- **Armazenamento Otimizado**
+  - Modelagem dimensional para Redshift
+  - Schemas otimizados para DynamoDB
+  - Jobs de carga incremental
+  - Indices e particionamento para queries frequentes
+
+### 4. Orquestração e Monitoramento Inicial
+- **Orchestração com Airflow**
+  - DAGs para diferentes fluxos de processamento
+  - Tratamento de dependências e falhas
+  - Parametrização e configuração por ambiente
+  - Backfills automatizados
+
+- **Observabilidade Fundamental**
+  - Métricas de execução de pipelines
+  - Logs estruturados e centralizados
+  - Alertas básicos para falhas críticas
+  - Dashboards operacionais iniciais
+
+## Fase 2: Processamento em Tempo Real e Observabilidade (2-3 meses)
+
+### 1. Infraestrutura de Streaming
+- **Serviços de Streaming**
+  - Implementação de MSK (Kafka gerenciado) ou Kinesis
+  - Configuração de tópicos e grupos de consumidores
+  - Mecanismos de retenção e compactação
+  - Estratégias de escalabilidade
+
+- **Integração com Fontes em Tempo Real**
+  - Conectores para sistemas transacionais
+  - Captura de dados de mudança (CDC)
+  - Simuladores para testes e desenvolvimento
+  - Validações em tempo real dos dados ingeridos
+
+### 2. Processamento de Streams
+- **Aplicações de Processamento**
+  - Implementação com Kafka Streams, Flink ou Spark Streaming
+  - Operadores de windowing e agregação
+  - Joins entre streams e dados de referência
+  - Detecção de anomalias em tempo real
+
+- **Integração Batch-Streaming**
+  - Deduplicação entre processos batch e streaming
+  - Consistência de visualizações em diferentes timeframes
+  - Lambda/Kappa architecture conforme necessidade
+  - Reconciliação de dados entre sistemas
+
+### 3. Armazenamento e Serving Layer
+- **Hot Storage**
+  - Redis/ElastiCache para dados de acesso frequente
+  - Mecanismos de TTL e expiração
+  - Cache de features para scoring em tempo real
+  - Estratégias de fallback
+
+- **Serving Layer**
+  - APIs para consulta em tempo real
+  - Websockets para atualizações de dashboards
+  - Integrações com sistemas de alerta
+  - Endpoints para scoring de transações
+
+### 4. Observabilidade Avançada
+- **Monitoramento End-to-End**
+  - Tracing distribuído (AWS X-Ray, Jaeger)
+  - Métricas de latência por componente
+  - Visibilidade de throughput e backpressure
+  - Health checks avançados
+
+- **Dashboards e Alertas**
+  - Dashboards operacionais completos
+  - Alertas com thresholds dinâmicos
+  - Visualização de fluxo de eventos
+  - KPIs de negócio (taxas de fraude, falsos positivos)
+
+- **Diagnostic Tools**
+  - Replay de eventos para debugging
+  - Dead letter queues para mensagens problemáticas
+  - Ferramentas de análise de logs em tempo real
+  - Circuit breakers para proteção de sistemas downstream
+
+## Fase 3: DevOps Avançado e Automação (1.5-2.5 meses)
+
+### 1. CI/CD Completo
+- **Pipeline para Código e Infraestrutura**
+  - Integração contínua para todo código Python e SQL
+  - Testes automatizados (unitários, integração, E2E)
+  - Validação de infraestrutura (Checkov, tfsec)
+  - Estratégias de deployment seguro (canário, blue/green)
+
+- **Automação de Ambientes**
+  - Criação de ambientes efêmeros para testes
+  - Promoção automática entre ambientes
+  - Sincronização de configurações
+  - Gestão de segredos centralizada
+
+### 2. Resiliência e Escalabilidade
+- **Auto-scaling**
+  - Políticas de escalabilidade para todos os componentes
+  - Testes de carga automatizados
+  - Otimização de custos via scaling dinâmico
+  - Escalonamento preditivo baseado em padrões históricos
+
+- **Resiliência**
+  - Implementação de padrões de retry e circuit breaker
+  - Testes de caos (chaos engineering)
+  - Estratégias de fallback gracioso
+  - Recuperação automática de falhas (self-healing)
+
+### 3. Otimização Contínua
+- **Performance**
+  - Benchmarks automatizados
+  - Query performance tuning
+  - Otimização de código e configurações
+  - Análise de padrões de acesso a dados
+
+- **Gestão de Custos**
+  - Dashboards detalhados de custos
+  - Alertas para anomalias de custo
+  - Otimização automática de recursos
+  - Análise de ROI por componente
+
+### 4. Documentação e Conhecimento
+- **Documentação Automatizada**
+  - Geração a partir de código e configurações
+  - Wiki centralizada e atualizada automaticamente
+  - Catálogo de códigos e scripts reutilizáveis
+  - Runbooks para operações comuns
+
+- **Transferência de Conhecimento**
+  - Sessões de treinamento
+  - Documentação de design decisions
+  - Troubleshooting guides
+  - Padrões e best practices
+
+## Fase 4: Governança Avançada e MLOps (2-3 meses)
+
+### 1. Governança de Dados Completa
+- **Catálogo de Dados Avançado**
+  - Implementação completa com AWS Glue ou Apache Atlas
+  - Interface self-service para descoberta de dados
+  - Documentação rica e searchable
+  - Integração com processos de aprovação
+
+- **Linhagem de Dados**
+  - Rastreamento completo da origem ao uso
+  - Visualização gráfica de dependências
+  - Análise de impacto para mudanças
+  - Auditoria de acesso e uso
+
+- **Qualidade de Dados**
+  - Framework completo (Great Expectations)
+  - Monitoramento contínuo de qualidade
+  - Scorecards por dataset
+  - Alertas para degradação de qualidade
+
+### 2. Compliance e Segurança
+- **Frameworks de Compliance**
+  - Implementação de controles para PCI-DSS
+  - Conformidade com LGPD/GDPR
+  - Relatórios automatizados
+  - Remediação automática de desvios
+
+- **Segurança Avançada**
+  - Criptografia avançada
+  - Tokenização de dados sensíveis
+  - Controle de acesso baseado em atributos
+  - Monitoramento de ameaças internas
+
+### 3. MLOps
+- **Feature Store**
+  - Implementação centralizada para features
+  - Consistência entre treinamento e inferência
+  - Versionamento de features
+  - Documentação e metadados
+
+- **Pipeline de ML**
+  - Automação de treinamento e deployment
+  - Versionamento de modelos e dados
+  - Experimentos rastreáveis
+  - A/B testing automatizado
+
+- **Monitoramento de Modelos**
+  - Detecção de drift
+  - Análise de performance
+  - Alertas para degradação
+  - Retreinamento automático
+
+### 4. Ética e Responsabilidade
+- **IA Responsável**
+  - Framework para avaliação ética de modelos
+  - Mitigação de vieses
+  - Explicabilidade de decisões
+  - Governança para uso de ML
+
+- **Feedback Loop**
+  - Captura de feedback de analistas
+  - Incorporação de conhecimento de domínio
+  - Melhoria contínua baseada em falsos positivos/negativos
+  - Medição de impacto de negócio
+
+## Cronograma
+
+| Fase | Duração | Principais Entregas |
+|------|---------|---------------------|
+| **Fase 1:** Fundação e Processamento Batch | 3-4 meses | • Infraestrutura base implementada via Terraform<br>• Pipeline ETL completo para processamento batch<br>• Data Lake e Data Warehouse operacionais<br>• Governança básica e orquestração |
+| **Fase 2:** Processamento em Tempo Real e Observabilidade | 2-3 meses | • Infraestrutura de streaming operacional<br>• Processamento em tempo real com detecção de anomalias<br>• Integração batch/streaming<br>• Sistema completo de observabilidade |
+| **Fase 3:** DevOps Avançado e Automação | 1.5-2.5 meses | • CI/CD completo para código e infraestrutura<br>• Automação de operações e escalabilidade<br>• Otimização de performance e custos<br>• Documentação e processos operacionais |
+| **Fase 4:** Governança Avançada e MLOps | 2-3 meses | • Catálogo de dados e linhagem completos<br>• Framework robusto de qualidade de dados<br>• Pipeline MLOps automatizado<br>• Monitoramento de modelos e governança ética |
+| **Total** | 8.5-12.5 meses | |
 
 ## Arquitetura
 
